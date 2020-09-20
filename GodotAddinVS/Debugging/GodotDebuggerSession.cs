@@ -102,7 +102,7 @@ namespace GodotAddinVS.Debugging
                     {
                         DebuggerHost = host,
                         DebuggerPort = assignedDebugPort,
-                        BuildBeforePlaying = false
+                        BuildBeforePlaying = true
                     };
 
                     _ = godotMessagingClient.SendRequest<DebugPlayResponse>(playRequest)
