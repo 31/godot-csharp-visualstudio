@@ -80,6 +80,13 @@ namespace GodotAddinVS
             if (!IsGodotProject(hierarchy))
                 return 0;
 
+            return RegisterOpenGodotProject(hierarchy);
+        }
+
+        public int RegisterOpenGodotProject(IVsHierarchy hierarchy)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             lock (RegisterLock)
             {
                 if (_registered)

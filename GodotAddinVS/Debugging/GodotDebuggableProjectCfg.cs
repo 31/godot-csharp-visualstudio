@@ -97,6 +97,13 @@ namespace GodotAddinVS.Debugging
 
             Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
 
+            DebugLaunchCore(_baseProject);
+
+            return VSConstants.S_OK;
+        }
+
+        public static void DebugLaunchCore(EnvDTE.Project _baseProject)
+        {
             var random = new Random(DateTime.Now.Millisecond);
             var port = 8800 + random.Next(0, 100);
 
@@ -108,8 +115,6 @@ namespace GodotAddinVS.Debugging
             var launcher = new MonoDebuggerLauncher(new Progress<string>());
 
             launcher.StartSession(startInfo, session);
-
-            return VSConstants.S_OK;
         }
 
         public int QueryDebugLaunch(uint grfLaunch, out int pfCanLaunch)

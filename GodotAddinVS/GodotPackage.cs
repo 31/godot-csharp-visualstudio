@@ -35,6 +35,7 @@ namespace GodotAddinVS
         LanguageVsTemplate = "CSharp", TemplateGroupIDsVsTemplate = "Godot")]
     [ProvideOptionPage(typeof(GeneralOptionsPage),
         "Godot", "General", 0, 0, true)]
+    [ProvideAutoLoad(PackageGuidString, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     public sealed class GodotPackage : AsyncPackage
     {
@@ -64,9 +65,13 @@ namespace GodotAddinVS
         protected override async Task InitializeAsync(CancellationToken cancellationToken,
             IProgress<ServiceProgressData> progress)
         {
+            await base.InitializeAsync(cancellationToken, progress);
+
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+
+            await DebugCommand.InitializeAsync(this);
 
             RegisterProjectFactory(new GodotFlavoredProjectFactory(this));
 
